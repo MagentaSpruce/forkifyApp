@@ -1,14 +1,16 @@
 #Forkify Recipe Application
+1234
 
 This project creates a recipe application which utilizes a custom API. This project was constructed following the instructions of Jonas Schedtmann, a Udemy instructor.
 
 Building this project has helped me to better learn and practice the following:
-1) Working with API's
 
+1. Working with API's
 
 A general walkthrough of the unfactored, functional code is below. To see the fully refactored and finalized code, please check the relevant files in this directory.
 
 Firstly an AJAX call is made to the API(https://forkify-api.herokuapp.com/v2) using the showRecipe() function to load and format a recipe from the API.
+
 ```JavaScript
 const showRecipe = async function () {
   try {
@@ -16,7 +18,7 @@ const showRecipe = async function () {
       'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc96e'
     );
     const data = await res.json();
-  
+
     if (!res.ok) throw new Error(`${data.message}(${res.status})`);
 
     let { recipe } = data.data;
@@ -37,8 +39,8 @@ const showRecipe = async function () {
 showRecipe();
 ```
 
+To render the newly fetched recipe, HTML was dynamically edited using template literals and then inserted into the recipeContainer. \*To make the SVG icons work, they had to be imported into the dist folder (import icons from 'url:../img/icons.svg';)
 
-To render the newly fetched recipe, HTML was dynamically edited using template literals and then inserted into the recipeContainer. *To make the SVG icons work, they had to be imported into the dist folder (import icons from 'url:../img/icons.svg';)
 ```JavaScript
 const markup = `
     <figure class="recipe__fig">
@@ -142,8 +144,8 @@ const markup = `
     recipeContainer.insertAdjacentHTML('afterbegin', markup);
 ```
 
-
 To render a waiting spinner during loading times the renderSpinner() function was created and later called during the showRecipe() function.
+
 ```JavaScript
 const renderSpinner = function (parentEl) {
   const markup = `
