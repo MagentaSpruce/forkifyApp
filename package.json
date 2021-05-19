@@ -1,0 +1,24 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "recipe app",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagentaSpruce/forkifyApp.git"
+  },
+  "author": "MagentaSpruce",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagentaSpruce/forkifyApp/issues"
+  },
+  "homepage": "https://github.com/MagentaSpruce/forkifyApp#readme",
+  "devDependencies": {
+    "parcel": "2.0.0-beta.1",
+    "sass": "1.26.10"
+  }
+}
