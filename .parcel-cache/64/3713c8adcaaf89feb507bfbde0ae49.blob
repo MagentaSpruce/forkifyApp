@@ -2200,8 +2200,6 @@ var _data = /*#__PURE__*/new WeakMap();
 
 var _errorMessage = /*#__PURE__*/new WeakMap();
 
-var _message = /*#__PURE__*/new WeakMap();
-
 var _clear = /*#__PURE__*/new WeakSet();
 
 var _generateMarkup = /*#__PURE__*/new WeakSet();
@@ -2229,11 +2227,6 @@ class RecipeView {
     _errorMessage.set(this, {
       writable: true,
       value: `We could not find that recipe! 🙈 Please search for another!`
-    });
-
-    _message.set(this, {
-      writable: true,
-      value: ''
     });
   }
 
@@ -2268,23 +2261,6 @@ class RecipeView {
          <div>
               <svg>
                 <use href="${_icons.default}#icon-alert-triangle"></use>
-              </svg>
-         </div>
-         <p>${message}</p>
-    </div>
-    `;
-
-    _classPrivateMethodGet(this, _clear, _clear2);
-
-    _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML('afterbegin', markup);
-  }
-
-  renderSuccess(message = _classPrivateFieldGet(this, _message)) {
-    const markup = `
-    <div class="message">
-         <div>
-              <svg>
-                <use href="${_icons.default}#icon-smile"></use>
               </svg>
          </div>
          <p>${message}</p>

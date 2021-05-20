@@ -467,7 +467,7 @@ const controlRecipes = async function () {
 
     _recipeView.default.render(model.state.recipe);
   } catch (err) {
-    _recipeView.default.renderError();
+    alert(err);
   }
 };
 
@@ -1326,10 +1326,6 @@ var _config = require("./config.js");
 
 var _helpers = require("./helpers");
 
-var _recipeView = _interopRequireDefault(require("./views/recipeView.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 const state = {
   recipe: {}
 }; //Pulls data from Forkify API, then sends data to export state which then sends it to the controller where it is used for rendering
@@ -1360,15 +1356,11 @@ const loadRecipe = async function (id) {
   } catch (err) {
     //Temp error handler
     console.error(`err 👻`);
-
-    _recipeView.default.renderError();
-
-    throw err;
   }
 };
 
 exports.loadRecipe = loadRecipe;
-},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers":"0e8dcd8a4e1c61cf18f78e1c2563655d","./views/recipeView.js":"bcae1aced0301b01ccacb3e6f7dfede8"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
+},{"regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","./config.js":"09212d541c5c40ff2bd93475a904f8de","./helpers":"0e8dcd8a4e1c61cf18f78e1c2563655d"}],"e155e0d3930b156f86c48e8d05522b16":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2198,10 +2190,6 @@ var _parentElement = /*#__PURE__*/new WeakMap();
 
 var _data = /*#__PURE__*/new WeakMap();
 
-var _errorMessage = /*#__PURE__*/new WeakMap();
-
-var _message = /*#__PURE__*/new WeakMap();
-
 var _clear = /*#__PURE__*/new WeakSet();
 
 var _generateMarkup = /*#__PURE__*/new WeakSet();
@@ -2224,16 +2212,6 @@ class RecipeView {
     _data.set(this, {
       writable: true,
       value: void 0
-    });
-
-    _errorMessage.set(this, {
-      writable: true,
-      value: `We could not find that recipe! 🙈 Please search for another!`
-    });
-
-    _message.set(this, {
-      writable: true,
-      value: ''
     });
   }
 
@@ -2262,29 +2240,12 @@ class RecipeView {
     _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderError(message = _classPrivateFieldGet(this, _errorMessage)) {
+  renderError(message) {
     const markup = `
     <div class="error">
          <div>
               <svg>
                 <use href="${_icons.default}#icon-alert-triangle"></use>
-              </svg>
-         </div>
-         <p>${message}</p>
-    </div>
-    `;
-
-    _classPrivateMethodGet(this, _clear, _clear2);
-
-    _classPrivateFieldGet(this, _parentElement).insertAdjacentHTML('afterbegin', markup);
-  }
-
-  renderSuccess(message = _classPrivateFieldGet(this, _message)) {
-    const markup = `
-    <div class="message">
-         <div>
-              <svg>
-                <use href="${_icons.default}#icon-smile"></use>
               </svg>
          </div>
          <p>${message}</p>
