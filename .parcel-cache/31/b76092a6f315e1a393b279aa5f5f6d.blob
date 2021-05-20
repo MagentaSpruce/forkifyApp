@@ -492,7 +492,7 @@ const controlSearchResults = async function () {
     // resultsView.render(model.state.search.results);
     // console.log(model.getSearchResultsPage(1));
 
-    _resultsView.default.render(model.getSearchResultsPage());
+    _resultsView.default.render(model.getSearchResultsPage(2));
   } catch (err) {
     console.log(err);
   }
@@ -1364,7 +1364,6 @@ const state = {
   search: {
     query: '',
     results: [],
-    page: 1,
     resultsPerPage: _config.RES_PER_PAGE
   }
 }; //Pulls data from Forkify API, then sends data to export state which then sends it to the controller where it is used for rendering
@@ -1426,8 +1425,7 @@ const loadSearchResults = async function (query) {
 
 exports.loadSearchResults = loadSearchResults;
 
-const getSearchResultsPage = function (page = state.search.page) {
-  state.search.page = page;
+const getSearchResultsPage = function (page) {
   const start = (page - 1) * state.search.resultsPerPage; //0;
 
   const end = page * state.search.resultsPerPage; //9;

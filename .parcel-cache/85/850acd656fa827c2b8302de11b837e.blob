@@ -492,7 +492,7 @@ const controlSearchResults = async function () {
     // resultsView.render(model.state.search.results);
     // console.log(model.getSearchResultsPage(1));
 
-    _resultsView.default.render(model.getSearchResultsPage());
+    _resultsView.default.render(model.getSearchResultsPage(1));
   } catch (err) {
     console.log(err);
   }
