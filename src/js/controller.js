@@ -1,3 +1,4 @@
+//Imports everything from model.js to make all the exports (model.state & model.loadRecipe)
 import * as model from './model.js';
 import recipeView from './views/recipeView';
 
@@ -7,14 +8,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe');
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -27,10 +20,11 @@ const controlRecipes = async function () {
 
     if (!id) return;
     recipeView.renderSpinner();
-    //1) Loading recipe
+    //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
+    //.loadRecipe(id) gives access to state.recipe
     await model.loadRecipe(id);
 
-    //2) Rendering recipe
+    //2) Rendering recipe once the data from loadRecipe() is available
     recipeView.render(model.state.recipe);
   } catch (err) {
     alert(err);

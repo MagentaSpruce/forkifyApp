@@ -7,6 +7,7 @@ class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
 
+  //Receieves data from recipeView.render(model.state.recipe); and sets it equal to this.#data
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
@@ -27,8 +28,8 @@ class RecipeView {
           </div>
           `;
 
-    // this.parentElement.innerHTML = '';
-    // this.parentElement.insertAdjacentHTML('afterbegin', markup);
+    this.#parentElement.innerHTML = '';
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   };
 
   #generateMarkup() {

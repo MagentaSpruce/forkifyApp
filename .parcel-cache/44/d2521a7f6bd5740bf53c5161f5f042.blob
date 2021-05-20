@@ -2142,7 +2142,7 @@ const timeout = function (s) {
 
 const getJSON = async function (url) {
   try {
-    //When timeout = 0 then setTimeout() is called which throws a rejection - set in config.js
+    //When timeout = 0 then setTimeout() is called which throws a rejection
     const res = await Promise.race([fetch(url), timeout(_config.TIMEOUT_SEC)]);
     const data = await res.json();
     if (!res.ok) throw new Error(`${data.message}(${res.status})`); //data is the value of the resolved promise returned by getJSON
