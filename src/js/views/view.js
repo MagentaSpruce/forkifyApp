@@ -26,7 +26,7 @@ export default class View {
           `;
 
     this._clear;
-    console.log(this._parentElement);
+    // console.log(this._parentElement);
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
