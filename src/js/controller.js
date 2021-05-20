@@ -11,7 +11,7 @@ const recipeContainer = document.querySelector('.recipe');
 
 // https://forkify-api.herokuapp.com/v2
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const controlRecipes = async function () {
   try {
@@ -31,8 +31,7 @@ const controlRecipes = async function () {
   }
 };
 
-['hashchange', 'load'].forEach(event =>
-  window.addEventListener(event, controlRecipes)
-);
-// window.addEventListener('hashchange', controlRecipes);
-// window.addEventListener('load', controlRecipes);
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+};
+init();
