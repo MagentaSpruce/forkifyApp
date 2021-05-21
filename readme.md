@@ -16,6 +16,9 @@ Building this project has helped me to better learn and practice the following:
 11) isEqualNode()
 12) nodeValue
 13) Using local storage
+14) FormData()
+15) fromEntries()
+16) replaceAll()
 
 
 A general walkthrough of the unfactored, functional code is below. To see the fully refactored and finalized code, please check the relevant files in this directory.
@@ -509,4 +512,4 @@ export const deleteBookmark = function (id) {
 };
 ```
 
-
+***Walkthrough finished
