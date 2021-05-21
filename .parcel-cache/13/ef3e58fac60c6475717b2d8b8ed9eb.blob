@@ -474,8 +474,7 @@ const controlRecipes = async function () {
 
     await model.loadRecipe(id); //2) Rendering recipe once the data from loadRecipe() is available
 
-    _recipeView.default.render(model.state.recipe); //TEST
-
+    _recipeView.default.render(model.state.recipe);
   } catch (err) {
     _recipeView.default.renderError();
   }
@@ -509,17 +508,15 @@ const controlPagination = function (goToPage) {
   _paginationView.default.render(model.state.search);
 };
 
-const controlServings = function (newServings) {
+const controlServings = function () {
   // Update the recipe servings (in state)
-  model.updateServings(newServings); // Update the recipe view
+  model.updateServings(8); // Update the recipe view
 
   _recipeView.default.render(model.state.recipe);
 };
 
 const init = function () {
   _recipeView.default.addHandlerRender(controlRecipes);
-
-  _recipeView.default.addHandlerUpdateServings(controlServings);
 
   _searchView.default.addHandlerSearch(controlSearchResults);
 
@@ -1454,8 +1451,8 @@ const getSearchResultsPage = function (page = state.search.page) {
 exports.getSearchResultsPage = getSearchResultsPage;
 
 const updateServings = function (newServings) {
-  state.recipe.ingredients.forEach(ing => {
-    ing.quantity = ing.quantity * newServings / state.recipe.servings; // newQt = oldQt * newServings / oldServings // 2 * 8 / 4 = 4
+  state.recipe.ingredients.forEach(ingredient => {
+    ingredient.quantity = ing.quantity * newServings / state.recipe.servings; // newQt = oldQt * newServings / oldServings //
   });
   state.recipe.servings = newServings;
 };
@@ -2295,16 +2292,6 @@ class RecipeView extends _View.default {
     // window.addEventListener('load', controlRecipes);
   }
 
-  addHandlerUpdateServings(handler) {
-    this._parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn--update-servings');
-      if (!btn) return; // console.log(btn);
-
-      const updateTo = +btn.dataset.updateTo;
-      if (updateTo > 0) handler(updateTo);
-    });
-  }
-
   _generateMarkup() {
     console.log(this._data);
     return `
@@ -2331,12 +2318,12 @@ class RecipeView extends _View.default {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings - 1}">
+              <button class="btn--tiny btn--increase-servings">
                 <svg>
                   <use href="${_icons.default}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings + 1}">
+              <button class="btn--tiny btn--increase-servings">
                 <svg>
                   <use href="${_icons.default}#icon-plus-circle"></use>
                 </svg>
