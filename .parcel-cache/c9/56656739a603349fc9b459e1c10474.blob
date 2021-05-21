@@ -1,9 +1,0 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.API_URL = void 0;
-//All the constants/reusable variables go here - allows easy config
-const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes';
-exports.API_URL = API_URL;
