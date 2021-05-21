@@ -3,27 +3,28 @@
 This project creates a recipe application which utilizes a custom API. This project was constructed following the instructions of Jonas Schedtmann, a Udemy instructor.
 
 Building this project has helped me to better learn and practice the following:
-1) Project planning
-2) Working with API's
-3) Dynamically inserting content
-4) Guard clauses
-5) Using external libraries (npmjs.com)
-6) MVC architecture
-7) Code refactoring / DRY
-8) Pagination
-9) createRange()
-10) createContextualFragment()
-11) isEqualNode()
-12) nodeValue
-13) Using local storage
-14) FormData()
-15) fromEntries()
-16) replaceAll()
 
+1. Project planning
+2. Working with API's
+3. Dynamically inserting content
+4. Guard clauses
+5. Using external libraries (npmjs.com)
+6. MVC architecture
+7. Code refactoring / DRY
+8. Pagination
+9. createRange()
+10. createContextualFragment()
+11. isEqualNode()
+12. nodeValue
+13. Using local storage
+14. FormData()
+15. fromEntries()
+16. replaceAll()
 
 A general walkthrough of the unfactored, functional code is below. To see the fully refactored and finalized code, please check the relevant files in this directory.
 
 Firstly an AJAX call is made to the API(https://forkify-api.herokuapp.com/v2) using the showRecipe() function to load and format a recipe from the API.
+
 ```JavaScript
 const showRecipe = async function () {
   try {
@@ -31,7 +32,7 @@ const showRecipe = async function () {
       'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc96e'
     );
     const data = await res.json();
-  
+
     if (!res.ok) throw new Error(`${data.message}(${res.status})`);
 
     let { recipe } = data.data;
@@ -52,8 +53,8 @@ const showRecipe = async function () {
 showRecipe();
 ```
 
+To render the newly fetched recipe, HTML was dynamically edited using template literals and then inserted into the recipeContainer. \*To make the SVG icons work, they had to be imported into the dist folder (import icons from 'url:../img/icons.svg';)
 
-To render the newly fetched recipe, HTML was dynamically edited using template literals and then inserted into the recipeContainer. *To make the SVG icons work, they had to be imported into the dist folder (import icons from 'url:../img/icons.svg';)
 ```JavaScript
 const markup = `
     <figure class="recipe__fig">
@@ -157,8 +158,8 @@ const markup = `
     recipeContainer.insertAdjacentHTML('afterbegin', markup);
 ```
 
-
 To render a waiting spinner during loading times the renderSpinner() function was created and later called during the showRecipe() function.
+
 ```JavaScript
 const renderSpinner = function (parentEl) {
   const markup = `
@@ -173,22 +174,22 @@ const renderSpinner = function (parentEl) {
 };
 ```
 
-
 To dynamically retrieve the ID of a recipe for manipulation, an add event listener is added to the window awaiting a hashchange and another awaiting a loading event. Then, the id variable is set inside of showRecipe(). slice() is used to remove the #.
+
 ```JavaScript
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, showRecipe));
 
     const id = window.location.hash.slice(1);
-    
+
         const res = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
 ```
 
-
 To implement a more descriptive error handling, the renderError() method was constructed.
+
 ```JavaScript
   #errorMessage = `We could not find that recipe! 🙈 Please search for another!`;
-  
+
   renderError(message = this.#errorMessage) {
     const markup = `
     <div class="error">
@@ -205,11 +206,11 @@ To implement a more descriptive error handling, the renderError() method was con
   }
 ```
 
-
 This process was repeated for successful handling.
+
 ```JavaScript
   #message = '';
-  
+
   renderSuccess(message = this.#message) {
     const markup = `
     <div class="message">
@@ -226,8 +227,8 @@ This process was repeated for successful handling.
   }
 ```
 
-
 To implement the search recipe functionality the loadSearchResults() async method is constructed and exported to the controller for use there. The controlSearchResults() function is then constructed in the controller which calls loadSearchResults() on a click event or form submission.
+
 ```JavaScript
 export const loadSearchResults = async function (query) {
   try {
@@ -264,7 +265,7 @@ class SearchView {
     //Gets user search query
     return this.#parentEl.querySelector('.search__field').nodeValue;
   }
-  
+
     clearInput() {
     this.#parentEl.querySelector('search__field').value = '';
   }
@@ -280,8 +281,8 @@ class SearchView {
 export default new SearchView();
 ```
 
-
 To create the search results view list which is rendered to the UI, the ResultsView class was created.
+
 ```JavaScript
 class ResultsView extends View {
   _parentElement = document.querySelector('.results');
@@ -312,9 +313,9 @@ class ResultsView extends View {
 }
 ```
 
-
 To implement pagination on the search results the getSearchResultsPage() function was constructed.
-```JavaScript
+
+````JavaScript
 export const getSearchResultsPage = function (page = state.search.page) {
     state.search.page = page;
 
@@ -411,10 +412,10 @@ const controlPagination = function (goToPage) {
   paginationView.render(model.state.search);
 };
 
-```
-
+````
 
 For updating the recipe serving sizes event handlers are added to the change service buttons which update and rerender the recipe. This is done by way of the updateServings() and controlServings() functions along with the addHandlerUpdateServings() method.
+
 ```JavaScript
 export const updateServings = function (newServings) {
   state.recipe.ingredients.forEach(ing => {
@@ -442,8 +443,8 @@ const controlServings = function (newServings) {
   }
 ```
 
-
 A DOM updating algorithm was constructed to only update specified parts of the UI by way of the update() method. a new DOM was created to compare the current with new DOM elements and make any necessary insertions for any changed content.
+
 ```JavaScript
   update(data) {
     // if (!data || (Array.isArray(data) && data.length === 0))
@@ -476,8 +477,10 @@ A DOM updating algorithm was constructed to only update specified parts of the U
   }
 ```
 
+finished
 
 To implement the bookmarking functionality the controlAddBookmark() function was created inside the model for use in the controller which is then used inside of the addHandlerAddBookmark() method contained within the Recipe View class. To add and remove a bookmark, the addBookmark() and deleteBookmark() functions were created.
+
 ```JavaScript
 const controlAddBookmark = function () {
   console.log(model.state.recipe.bookmarked);
@@ -495,7 +498,7 @@ const controlAddBookmark = function () {
       handler();
     });
   }
-  
+
   export const addBookmark = function (recipe) {
   //Add bookmark
   state.bookmarks.push(recipe);
@@ -512,4 +515,4 @@ export const deleteBookmark = function (id) {
 };
 ```
 
-***Walkthrough finished
+\*\*\*Walkthrough finished
