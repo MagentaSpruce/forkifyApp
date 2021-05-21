@@ -1,5 +1,7 @@
 #Forkify Recipe Application
 
+***TO see this app live version go here: https://forkify-spruce.netlify.app/
+
 This project creates a recipe application which utilizes a custom API. This project was constructed following the instructions of Jonas Schedtmann, a Udemy instructor.
 
 Building this project has helped me to better learn and practice the following:
