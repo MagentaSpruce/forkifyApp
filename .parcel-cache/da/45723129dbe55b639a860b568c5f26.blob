@@ -468,10 +468,7 @@ const controlRecipes = async function () {
 
     if (!id) return;
 
-    _recipeView.default.renderSpinner(); //0) Update results view to mark selected search result
-
-
-    _resultsView.default.update(model.getSearchResultsPage()); //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
+    _recipeView.default.renderSpinner(); //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
     //.loadRecipe(id) gives access to state.recipe
 
 
@@ -2920,33 +2917,10 @@ class View {
   }
 
   update(data) {
-    // if (!data || (Array.isArray(data) && data.length === 0))
-    //   return this.renderError();
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
 
-    const newMarkup = this._generateMarkup();
-
-    const newDOM = document.createRange().createContextualFragment(newMarkup);
-    const newElements = Array.from(newDOM.querySelectorAll('*')); // console.log(newElements);
-
-    const curElements = Array.from(this._parentElement.querySelectorAll('*')); // console.log(curElements);
-    // console.log(newElements);
-
-    newElements.forEach((newEl, i) => {
-      var _newEl$firstChild;
-
-      const curEl = curElements[i]; //isEqualNode() compares content of curEl with newEl
-
-      console.log(curEl, newEl.isEqualNode(curEl)); //Updates changed text
-
-      if (!newEl.isEqualNode(curEl) && ((_newEl$firstChild = newEl.firstChild) === null || _newEl$firstChild === void 0 ? void 0 : _newEl$firstChild.nodeValue.trim()) !== '') {
-        // console.log('🧓', newEl.firstChild.nodeValue.trim());
-        curEl.textContent = newEl.textContent;
-      } //Updates changed attributes
-
-
-      if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
-    });
+    const markup = this._generateMarkup();
   }
 
   _clear() {
@@ -3073,10 +3047,9 @@ class ResultsView extends _View.default {
   }
 
   _generateMarkupPreview(result) {
-    const id = window.location.hash.slice(1);
     return `
     <li class="preview">
-        <a class="preview__link ${result.id === id ? 'preview__link--active' : ''}" href="#${result.id}">
+        <a class="preview__link" href="#${result.id}">
         <figure class="preview__fig">
             <img src="${result.image}" alt="${result.title}" />
         </figure>

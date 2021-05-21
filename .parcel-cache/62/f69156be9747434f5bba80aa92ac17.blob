@@ -1,48 +1,54 @@
-import icons from 'url:../../img/icons.svg';
-export default class View {
-  _data;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class View {
+  constructor() {
+    _defineProperty(this, "_data", void 0);
+  }
+
   //Receieves data from recipeView.render(model.state.recipe); and sets it equal to this._data
   render(data) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
+
     const markup = this._generateMarkup();
+
     this._clear;
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   update(data) {
-    // if (!data || (Array.isArray(data) && data.length === 0))
-    //   return this.renderError();
-
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
+
     const newMarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
-    const newElements = Array.from(newDOM.querySelectorAll('*'));
-    // console.log(newElements);
-    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
-    // console.log(curElements);
+    const newElements = Array.from(newDOM.querySelectorAll('*')); // console.log(newElements);
+
+    const curElements = Array.from(this._parentElement.querySelectorAll('*')); // console.log(curElements);
     // console.log(newElements);
 
     newElements.forEach((newEl, i) => {
-      const curEl = curElements[i];
-      //isEqualNode() compares content of curEl with newEl
+      const curEl = curElements[i]; //isEqualNode() compares content of curEl with newEl
+
       console.log(curEl, newEl.isEqualNode(curEl));
-      //Updates changed text
-      if (
-        !newEl.isEqualNode(curEl) &&
-        newEl.firstChild?.nodeValue.trim() !== ''
-      ) {
-        // console.log('🧓', newEl.firstChild.nodeValue.trim());
+
+      if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== '') {
+        console.log(newEl.firstChild.nodeValue.trim());
         curEl.textContent = newEl.textContent;
       }
-      //Updates changed attributes
-      if (!newEl.isEqualNode(curEl))
-        Array.from(newEl.attributes).forEach(attr =>
-          curEl.setAttribute(attr.name, attr.value)
-        );
     });
   }
 
@@ -54,13 +60,12 @@ export default class View {
     const markup = `
           <div class="spinner">
             <svg>
-              <use href="${icons}"></use>
+              <use href="${_icons.default}"></use>
             </svg>
           </div>
           `;
+    this._clear; // console.log(this._parentElement);
 
-    this._clear;
-    // console.log(this._parentElement);
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -69,13 +74,14 @@ export default class View {
     <div class="error">
          <div>
               <svg>
-                <use href="${icons}#icon-alert-triangle"></use>
+                <use href="${_icons.default}#icon-alert-triangle"></use>
               </svg>
          </div>
          <p>${message}</p>
     </div>
     `;
     this._clear;
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -84,13 +90,17 @@ export default class View {
     <div class="message">
          <div>
               <svg>
-                <use href="${icons}#icon-smile"></use>
+                <use href="${_icons.default}#icon-smile"></use>
               </svg>
          </div>
          <p>${message}</p>
     </div>
     `;
     this._clear;
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+
 }
+
+exports.default = View;

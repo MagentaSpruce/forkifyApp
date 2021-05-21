@@ -468,10 +468,7 @@ const controlRecipes = async function () {
 
     if (!id) return;
 
-    _recipeView.default.renderSpinner(); //0) Update results view to mark selected search result
-
-
-    _resultsView.default.update(model.getSearchResultsPage()); //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
+    _recipeView.default.renderSpinner(); //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
     //.loadRecipe(id) gives access to state.recipe
 
 
@@ -2920,8 +2917,7 @@ class View {
   }
 
   update(data) {
-    // if (!data || (Array.isArray(data) && data.length === 0))
-    //   return this.renderError();
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
 
     const newMarkup = this._generateMarkup();
@@ -2945,7 +2941,8 @@ class View {
       } //Updates changed attributes
 
 
-      if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+      if (!newEl.isEqualNode(curEl)) console.log(Array.from(newEl.attributes));
+      Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
     });
   }
 
@@ -3073,10 +3070,9 @@ class ResultsView extends _View.default {
   }
 
   _generateMarkupPreview(result) {
-    const id = window.location.hash.slice(1);
     return `
     <li class="preview">
-        <a class="preview__link ${result.id === id ? 'preview__link--active' : ''}" href="#${result.id}">
+        <a class="preview__link" href="#${result.id}">
         <figure class="preview__fig">
             <img src="${result.image}" alt="${result.title}" />
         </figure>
