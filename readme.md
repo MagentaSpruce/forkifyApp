@@ -15,6 +15,7 @@ Building this project has helped me to better learn and practice the following:
 10) createContextualFragment()
 11) isEqualNode()
 12) nodeValue
+13) Using local storage
 
 
 A general walkthrough of the unfactored, functional code is below. To see the fully refactored and finalized code, please check the relevant files in this directory.
@@ -471,3 +472,41 @@ A DOM updating algorithm was constructed to only update specified parts of the U
     });
   }
 ```
+
+
+To implement the bookmarking functionality the controlAddBookmark() function was created inside the model for use in the controller which is then used inside of the addHandlerAddBookmark() method contained within the Recipe View class. To add and remove a bookmark, the addBookmark() and deleteBookmark() functions were created.
+```JavaScript
+const controlAddBookmark = function () {
+  console.log(model.state.recipe.bookmarked);
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
+  console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
+  addHandlerAddBookmark(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--bookmark');
+      if (!btn) return;
+      handler();
+    });
+  }
+  
+  export const addBookmark = function (recipe) {
+  //Add bookmark
+  state.bookmarks.push(recipe);
+
+  //Mark current recipe as bookmarked
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+
+export const deleteBookmark = function (id) {
+  const index = state.bookmarks.findIndex(el => el.id === id);
+  state.bookmarks.splice(index, 1);
+  //Mark current recipe as no longer bookmarked
+  if (id === state.recipe.id) state.recipe.bookmarked = false;
+};
+```
+
+
