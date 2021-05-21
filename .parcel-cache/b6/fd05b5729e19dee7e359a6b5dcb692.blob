@@ -1,7 +1,21 @@
-import icons from 'url:../../img/icons.svg'; // Parcel 2
+"use strict";
 
-export default class View {
-  _data;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _icons = _interopRequireDefault(require("url:../../img/icons.svg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// Parcel 2
+class View {
+  constructor() {
+    _defineProperty(this, "_data", void 0);
+  }
 
   /**
    * Render the received object to the DOM
@@ -13,44 +27,39 @@ export default class View {
    * @todo Finish implementation
    */
   render(data, render = true) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-
+    if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
     this._data = data;
+
     const markup = this._generateMarkup();
 
     if (!render) return markup;
 
     this._clear();
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
   update(data) {
     this._data = data;
+
     const newMarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
     const newElements = Array.from(newDOM.querySelectorAll('*'));
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
-
     newElements.forEach((newEl, i) => {
-      const curEl = curElements[i];
-      // console.log(curEl, newEl.isEqualNode(curEl));
+      var _newEl$firstChild;
 
+      const curEl = curElements[i]; // console.log(curEl, newEl.isEqualNode(curEl));
       // Updates changed TEXT
-      if (
-        !newEl.isEqualNode(curEl) &&
-        newEl.firstChild?.nodeValue.trim() !== ''
-      ) {
+
+      if (!newEl.isEqualNode(curEl) && ((_newEl$firstChild = newEl.firstChild) === null || _newEl$firstChild === void 0 ? void 0 : _newEl$firstChild.nodeValue.trim()) !== '') {
         // console.log('💥', newEl.firstChild.nodeValue.trim());
         curEl.textContent = newEl.textContent;
-      }
+      } // Updates changed ATTRIBUES
 
-      // Updates changed ATTRIBUES
-      if (!newEl.isEqualNode(curEl))
-        Array.from(newEl.attributes).forEach(attr =>
-          curEl.setAttribute(attr.name, attr.value)
-        );
+
+      if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
     });
   }
 
@@ -62,11 +71,13 @@ export default class View {
     const markup = `
       <div class="spinner">
         <svg>
-          <use href="${icons}#icon-loader"></use>
+          <use href="${_icons.default}#icon-loader"></use>
         </svg>
       </div>
     `;
+
     this._clear();
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -75,13 +86,15 @@ export default class View {
       <div class="error">
         <div>
           <svg>
-            <use href="${icons}#icon-alert-triangle"></use>
+            <use href="${_icons.default}#icon-alert-triangle"></use>
           </svg>
         </div>
         <p>${message}</p>
       </div>
     `;
+
     this._clear();
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -90,13 +103,18 @@ export default class View {
       <div class="message">
         <div>
           <svg>
-            <use href="${icons}#icon-smile"></use>
+            <use href="${_icons.default}#icon-smile"></use>
           </svg>
         </div>
         <p>${message}</p>
       </div>
     `;
+
     this._clear();
+
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+
 }
+
+exports.default = View;

@@ -1,47 +1,37 @@
-//Imports everything from model.js to make all the exports (model.state & model.loadRecipe)
 import * as model from './model.js';
-import { MODAL_CLOSE_SEC } from './config';
-import recipeView from './views/recipeView';
-import searchView from './views/searchView';
-import resultsView from './views/resultsView';
-import paginationView from './views/paginationView';
-import bookmarksView from './views/bookmarksView';
-import addRecipeView from './views/addRecipeView';
+import { MODAL_CLOSE_SEC } from './config.js';
+import recipeView from './views/recipeView.js';
+import searchView from './views/searchView.js';
+import resultsView from './views/resultsView.js';
+import paginationView from './views/paginationView.js';
+import bookmarksView from './views/bookmarksView.js';
+import addRecipeView from './views/addRecipeView.js';
 
-//For polyfilling all except Async/Await
 import 'core-js/stable';
-//For polyfilling Async/Await
 import 'regenerator-runtime/runtime';
-
-// if (module.hot) {
-//   module.hot.accept();
-// }
-
-// https://forkify-api.herokuapp.com/v2
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import { async } from 'regenerator-runtime';
 
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
-    // console.log(id);
 
     if (!id) return;
     recipeView.renderSpinner();
-    //0) Update results view to mark selected search result
+
+    // 0) Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage());
-    //1) Loading recipe - waiting for data from the model. loadRecipe is async, so must await.
-    //.loadRecipe(id) gives access to state.recipe
+
+    // 1) Updating bookmarks view
+    bookmarksView.update(model.state.bookmarks);
+
+    // 2) Loading recipe
     await model.loadRecipe(id);
 
-    //2) Rendering recipe once the data from loadRecipe() is available
+    // 3) Rendering recipe
     recipeView.render(model.state.recipe);
-    //TEST
-
-    //3) Updating bookmarks view
-    bookmarksView.update(model.state.bookmarks);
   } catch (err) {
     recipeView.renderError();
+    console.error(err);
   }
 };
 
@@ -77,22 +67,20 @@ const controlPagination = function (goToPage) {
 const controlServings = function (newServings) {
   // Update the recipe servings (in state)
   model.updateServings(newServings);
+
   // Update the recipe view
-  // recipeView.render(model.state.recipe);
   recipeView.update(model.state.recipe);
 };
 
 const controlAddBookmark = function () {
-  // console.log(model.state.recipe.bookmarked);
-  //1) Add or remove bookmark
+  // 1) Add/remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
 
-  // console.log(model.state.recipe);
-  //2) Update recipe view
+  // 2) Update recipe view
   recipeView.update(model.state.recipe);
 
-  //3) Render bookmarks
+  // 3) Render bookmarks
   bookmarksView.render(model.state.bookmarks);
 };
 
@@ -102,16 +90,25 @@ const controlBookmarks = function () {
 
 const controlAddRecipe = async function (newRecipe) {
   try {
-    //Show loading spinner
+    // Show loading spinner
     addRecipeView.renderSpinner();
-    //Upload new recipe data
+
+    // Upload the new recipe data
     await model.uploadRecipe(newRecipe);
     console.log(model.state.recipe);
-    //Render recipe
+
+    // Render recipe
     recipeView.render(model.state.recipe);
 
-    //Success message
+    // Success message
     addRecipeView.renderMessage();
+
+    // Render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change ID in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
     // Close form window
     setTimeout(function () {
       addRecipeView.toggleWindow();
@@ -120,9 +117,6 @@ const controlAddRecipe = async function (newRecipe) {
     console.error('💥', err);
     addRecipeView.renderError(err.message);
   }
-  console.log(newRecipe);
-
-  //Upload the new recipe data
 };
 
 const init = function () {
